@@ -67,6 +67,7 @@ set(config_module_list
 	modules/mavlink
 	modules/uavcan
 	modules/land_detector
+	modules/street_drone
 
 	#
 	# Estimation modules
