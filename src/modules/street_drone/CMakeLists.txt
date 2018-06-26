@@ -37,15 +37,15 @@ px4_add_module(
 	SRCS
 		street_drone.c
 	DEPENDS
-		uavcan
-		uavcan_stm32_driver
+#		uavcan
+#		uavcan_stm32_driver
 	INCLUDES
 		${PX4_SOURCE_DIR}/platforms/nuttx/NuttX/nuttx/include
 	)
 
 target_link_libraries(modules__street_drone
 	PRIVATE
-	uavcan
+#	uavcan
 	nuttx_apps
 	nuttx_arch
 	nuttx_drivers)

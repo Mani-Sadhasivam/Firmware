@@ -1,7 +1,7 @@
 
 px4_nuttx_configure(HWCLASS m4 CONFIG nsh ROMFS y ROMFSROOT px4fmu_common)
 
-set(config_uavcan_num_ifaces 2)
+#set(config_uavcan_num_ifaces 2)
 
 set(config_module_list
 	#
@@ -24,7 +24,7 @@ set(config_module_list
 	modules/sensors
 	#drivers/pwm_input
 	#drivers/camera_trigger
-
+#
 	#
 	# System commands
 	#
@@ -65,8 +65,8 @@ set(config_module_list
 	modules/load_mon
 	modules/navigator
 	modules/mavlink
-	modules/uavcan
-	modules/land_detector
+#	modules/uavcan
+#	modules/land_detector
 	modules/street_drone
 
 	#
