@@ -3325,9 +3325,9 @@ protected:
 			memcpy(msg.name, debug.name, sizeof(msg.name));
 			/* enforce null termination */
 			msg.name[sizeof(msg.name) - 1] = '\0';
-			msg.x = debug.x;
-			msg.y = debug.y;
-			msg.z = debug.z;
+			msg.str_req = debug.str_req;
+			msg.thr_req = debug.thr_req;
+			msg.str_auto = debug.str_auto;
 
 			mavlink_msg_debug_vect_send_struct(_mavlink->get_channel(), &msg);
 

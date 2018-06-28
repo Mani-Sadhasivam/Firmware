@@ -46,10 +46,21 @@
 #include <string.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <poll.h>
 #include <px4_module.h>
 #include <px4_log.h>
+#include <px4_posix.h>
 
 #include <nuttx/can/can.h>
+
+#include <uORB/uORB.h>
+#include <uORB/topics/debug_vect.h>
+
+#include <systemlib/systemlib.h>
+#include <systemlib/err.h>
+#include <uORB/uORB.h>
+#include <poll.h>
+#include <modules/px4iofirmware/protocol.h>
 
 #define BUFLEN 11
 #define POLYNOMIAL 0x1D
@@ -159,7 +170,12 @@ int street_drone_main(int argc, char *argv[])
 	int ret, nread, msglen, i, found = 0;
 	ssize_t msgsize, minsize;
 	int8_t str_req, thr_req;
-	
+
+	int send_topic = orb_subscribe(ORB_ID(debug_vect));
+        px4_pollfd_struct_t fds[1] = {};
+        fds[0].fd = send_topic;
+        fds[0].events = POLLIN;
+
 	fflush(stdout);
 
 	if (argc < 2) {
@@ -179,6 +195,18 @@ int street_drone_main(int argc, char *argv[])
 		if (fd < 0) {
 			PX4_ERR("Unable to open CAN device");
 			return -1;
+		}
+
+		while (1) {
+			ret = px4_poll(fds, 1, 1000);
+			if (ret < 0)
+				return -1;
+
+			if (fds[0].revents & POLLIN) {
+				struct debug_vect_s data;
+				orb_copy(ORB_ID(debug_vect), send_topic, &data);
+				PX4_INFO("Sending data:\nSteer Req: %d\nThrottle Req: %d", data.x, data.y);
+			}
 		}
 
 		if (!strcmp(argv[1], "send")) {

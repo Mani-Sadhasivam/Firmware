@@ -2439,9 +2439,10 @@ void MavlinkReceiver::handle_message_debug_vect(mavlink_message_t *msg)
 	debug_topic.timestamp_us = debug_msg.time_usec;
 	memcpy(debug_topic.name, debug_msg.name, sizeof(debug_topic.name));
 	debug_topic.name[sizeof(debug_topic.name) - 1] = '\0'; // enforce null termination
-	debug_topic.x = debug_msg.x;
-	debug_topic.y = debug_msg.y;
-	debug_topic.z = debug_msg.z;
+	debug_topic.str_req = debug_msg.str_req;
+	debug_topic.thr_req = debug_msg.thr_req;
+	debug_topic.str_auto = debug_msg.str_auto;
+	debug_topic.thr_auto = debug_msg.thr_auto;
 
 	if (_debug_vect_pub == nullptr) {
 		_debug_vect_pub = orb_advertise(ORB_ID(debug_vect), &debug_topic);
